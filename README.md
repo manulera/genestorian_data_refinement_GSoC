@@ -150,4 +150,47 @@ In general, in a collection we can find strains that:|
 #### What is the best way to reach out?
 Just send an email to Manu's address, that you can find in the GSoC page.
 
+#### What does the genotype of this strain mean?
+Let's take the strain [FY6848](https://yeast.nig.ac.jp/yeast/fy/StrainDetail.jsf?id=6848). Its genotype is `h90 ura4-D18`.
 
+
+h90 is the mating type of this strain. Mating is the same as sexually crossing. You can read more about it here: https://en.wikipedia.org/wiki/Mating_type
+For S. pombe there are three mating types: h-, h+ and h90. h90 can mate with all mating types, h- with h+ and h90, and h+ with h- and h90.
+
+ura4-D18 is the name of an allele in the ura4 locus (https://en.wikipedia.org/wiki/Locus_(genetics)).
+* You can find the information about the allele in Pombase: https://www.pombase.org/genotype/ura4-D18-unknown-disruption
+* You can see from the table in Pombase that the sequence of the allele is unknown. This means that the sequence of ura4 is messed up in some way that prevents the gene product (a protein) from performing its normal function.
+* If you go to 'cell phenotype' you can see that strains that have this allele are auxotroph (https://en.wikipedia.org/wiki/Auxotrophy) for uracil. The reason for this is that ura4 is a gene that is involved in the production of uracil, and cells without ura4 cannot make uracil from other biological molecules. Therefore, they have to be grown in a medium that has uracil.
+Many strains in collections have the ura4-D18 allele.
+* This is convenient because we can then introduce the ura4 gene as a selection marker. For example, let's say we have a strain with genotype `ura4-D18`, and we want to delete the gene ase1 in this strain. We can replace the sequence of ase1 in the genome by the sequence of the gene ura4. The resulting strain would have the following genotype: `ura4-D18 ase1Δ::ura4`. This new strain has a "normal" copy of ura4, and therefore can grow in the absence of uracil in the medium, so we can select for cells that have this genotype by growing them in the absence of uracil: https://en.wikipedia.org/wiki/Selectable_marker
+
+#### Is it safe to assume that other than the genes in the genotype description, the rest of the alleles are identical to those of the wild-type?
+
+Yes.
+
+#### Is the fission yeast catalogue from yeast.nig.ac.jp the dataset that we will use during the internship
+
+The [example dataset](https://yeast.nig.ac.jp/yeast/fy/StrainAllItemsList.jsf) mentioned is just an example. The datasets that you will be working with will come from research labs and will have more information, such as parent strains, etc.
+
+#### What will be the programming language used in the project?
+Python. This is mostly because researchers that code often do so in python, so it's a way to make contributions from researchers more likely. If you have experience in other programming languages but not python, that's really no problem, I am sure if you've used java/php/C++/ruby or something similar it will be easy for you to pick up python.
+
+#### What do you mean by "a framework to develop the refinement pipeline"?
+
+This is something that I am still looking into (if you find examples you can include them in your application). The idea is to follow the practices of another open source project that deals with a similar task or finding a framework for this kind of task. I imagine there must be some existing [web ontology](https://en.wikipedia.org/wiki/Web_Ontology_Language) that is meant to deal with pipelines like this. For example let's imagine the "true phenotype" `h- ase1Δ::NatMx6` (see previous questions). It could be wrongly written as `h-ase1D:Nat`. The application should apply a set of rules to fix the errors/inconsistencies, kind of like a [code linter](https://en.wikipedia.org/wiki/Lint_(software)). There should be an output indicating which rules have lead to the transformations applied to the data and in which order, so that the same transformation can be reproduced without running the analysis again. You could imagine a set of rules + transformations like this:
+
+1. **Rule #XYZ: add space between mating type**: uses an `addition` transformation that adds a space.
+
+    `h-ase1D:Nat -> h- ase1D:Nat`
+2. **Rule #XYZ: use Δ to indicate deletion**: uses a `substitution` transformation that changes `D` for `Δ`.
+    
+    `h-ase1D:Nat -> h- ase1Δ:Nat`
+
+Etc.
+
+
+#### How much should I know about text processing to join the project?
+
+If you have previously taught yourself other development skills and applied them in a project, that should be ok. In your application, please comment on what skills you have applied to other projects and how you acquired them. We want to find someone that can learn this by themselves or with minimal input from my side, as I have not done something like this myself before. That's one of the reasons why we want to find a framework, so that you can follow the practices in there.
+
+Regarding the actual text-processing algorithms, I think we won't be using things more complicated than regex and approximate string matching (https://en.wikipedia.org/wiki/Approximate_string_matching), so it should be manageable for someone with some developing experience, but for someone for which this is the first time they do something other than scripting, it might not be a good fit.
